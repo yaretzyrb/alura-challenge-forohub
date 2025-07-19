@@ -1,20 +1,12 @@
 package com.yaretzyram.alura.forohub.domains.models.answer;
 import com.yaretzyram.alura.forohub.domains.models.topic.Topic;
-import com.yaretzyram.alura.forohub.domains.models.username.Username;
+import com.yaretzyram.alura.forohub.domains.models.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "answers")
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(of = "id")
 public class Answer {
 
     @Id
@@ -28,6 +20,47 @@ public class Answer {
     private LocalDateTime createdAt;
     @ManyToOne()
     @JoinColumn(name = "user_id")
-    private Username author;
+    private User author;
 
+    public  Answer(){}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Topic getTopic() {
+        return topic;
+    }
+
+    public void setTopic(Topic topic) {
+        this.topic = topic;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
 }
