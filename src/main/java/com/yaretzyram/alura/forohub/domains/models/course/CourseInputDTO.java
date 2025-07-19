@@ -4,9 +4,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record CourseInputDTO(
-        @NotNull
-        Long id,
         @NotBlank
-        String name
+        String name,
+        @NotNull
+        Category category
 ) {
 }

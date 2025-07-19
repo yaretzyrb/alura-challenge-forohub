@@ -39,8 +39,8 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<UserOutputDTO>> getUsers(@PageableDefault(size = 5, sort = {"id"}) Pageable page){
-        return ResponseEntity.ok(userRepository.findByActiveTrue(page));
+    public ResponseEntity<List<UserOutputDTO>> getUsers(){
+        return ResponseEntity.ok(userRepository.findByActiveTrue().stream().toList());
     }
 
     @PutMapping
