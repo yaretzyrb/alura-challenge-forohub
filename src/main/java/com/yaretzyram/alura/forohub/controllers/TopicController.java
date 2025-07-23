@@ -52,4 +52,13 @@ public class TopicController {
         return ResponseEntity.ok(foundTopic);
     }
 
+    @PutMapping("{id}")
+    @Transactional
+    public ResponseEntity<TopicOutputDTO> updateTopic(@PathVariable Long id, @RequestBody TopicUpdateDTO updatedTopicData){
+        Topic existingTopic = topicRepository.getReferenceById(id);
+        existingTopic.updateTopicData(updatedTopicData);
+        TopicOutputDTO updatedTopic = new TopicOutputDTO(existingTopic.getId(), existingTopic.getTitle(), existingTopic.getMessage(), existingTopic.getAuthor().getName(), existingTopic.getCourse().getName(), existingTopic.getCreatedAt());
+        return ResponseEntity.ok(updatedTopic);
+    }
+
 }

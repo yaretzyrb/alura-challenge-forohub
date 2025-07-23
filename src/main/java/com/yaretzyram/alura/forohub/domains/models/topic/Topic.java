@@ -103,4 +103,9 @@ public class Topic {
                 ", answers=" + answers +
                 '}';
     }
+
+    public void updateTopicData(TopicUpdateDTO updatedTopicData) {
+        if(!this.title.equals(updatedTopicData.title()) && !updatedTopicData.title().isEmpty()) setTitle(updatedTopicData.title());
+        if(!this.message.equals(updatedTopicData.message()) && !updatedTopicData.message().isEmpty()) setMessage(updatedTopicData.message());
+    }
 }
