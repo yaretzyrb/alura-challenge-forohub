@@ -61,4 +61,11 @@ public class TopicController {
         return ResponseEntity.ok(updatedTopic);
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity deleteTopic(@PathVariable Long id){
+        Topic existingTopic = topicRepository.getReferenceById(id);
+        existingTopic.deactivateTopic();
+        return  ResponseEntity.ok("Topic deleted");
+    }
+
 }

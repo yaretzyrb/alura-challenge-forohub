@@ -57,7 +57,7 @@ public class UserController {
     public ResponseEntity deleteUser(@PathVariable Long id){
         User existingUser = userRepository.getReferenceById(id);
         existingUser.deactivateUser();
-        return ResponseEntity.ok("User deactivated");
+        return ResponseEntity.ok("User deleted");
     }
 
 }
