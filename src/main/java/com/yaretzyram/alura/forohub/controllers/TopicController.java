@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -41,7 +42,14 @@ public class TopicController {
 
     @GetMapping
     public ResponseEntity<List<TopicOutputDTO>> getTopics(){
-        return ResponseEntity.ok(topicRepository.findByActiveTrue().stream().toList());
+        return ResponseEntity.ok(topicRepository.findByActiveTrue().stream().sorted(Comparator.comparing(TopicOutputDTO::createdAt)).toList());
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<TopicOutputDTO> getTopicByID(@PathVariable Long id){
+        Topic topic = topicRepository.getReferenceById(id);
+        TopicOutputDTO foundTopic = new TopicOutputDTO(topic.getId(), topic.getTitle(), topic.getMessage(), topic.getAuthor().getName(), topic.getCourse().getName(), topic.getCreatedAt());
+        return ResponseEntity.ok(foundTopic);
     }
 
 }
