@@ -13,9 +13,6 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany(mappedBy = "course")
-    @Column(name = "topics")
-    private List<Topic> topics;
     @Column(name = "name")
     private String name;
     @Column(name = "category")
@@ -28,7 +25,6 @@ public class Course {
     public Course(CourseInputDTO courseInputDTO) {
         this.name = courseInputDTO.name();
         this.category = courseInputDTO.category();
-        this.topics = new ArrayList<Topic>();
         this.active = true;
     }
 
@@ -38,14 +34,6 @@ public class Course {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public List<Topic> getTopics() {
-        return topics;
-    }
-
-    public void setTopics(List<Topic> topics) {
-        this.topics = topics;
     }
 
     public String getName() {
@@ -76,7 +64,6 @@ public class Course {
     public String toString() {
         return "Course{" +
                 "id=" + id +
-                ", topics=" + topics +
                 ", name='" + name + '\'' +
                 ", category=" + category +
                 ", active=" + active +
@@ -84,6 +71,5 @@ public class Course {
     }
 
     public void deactivateCourse() {
-        this.active = false;
     }
 }

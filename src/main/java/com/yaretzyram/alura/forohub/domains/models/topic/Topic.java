@@ -1,11 +1,12 @@
 package com.yaretzyram.alura.forohub.domains.models.topic;
-
 import com.yaretzyram.alura.forohub.domains.models.answer.Answer;
 import com.yaretzyram.alura.forohub.domains.models.course.Course;
 import com.yaretzyram.alura.forohub.domains.models.user.User;
+import com.yaretzyram.alura.forohub.domains.models.user.UserOutputDTO;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,14 +30,15 @@ public class Topic {
 
     public Topic(){}
 
-    public Topic(TopicInputDTO topicInputDTO) {
-        this.title= topicInputDTO.title();
+    public Topic(TopicInputDTO topicInputDTO, User user, Course course){
+        this.title = topicInputDTO.title();
         this.message = topicInputDTO.message();
         this.createdAt = LocalDateTime.now();
-        this.author = null;
-        this.course = null;
-        this.answers = null;
+        this.author = user;
+        this.course = course;
+        this.answers = new ArrayList<Answer>();
     }
+
 
     public Long getId() {
         return id;
@@ -66,31 +68,28 @@ public class Topic {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public User getAuthor() {
         return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
     }
 
     public Course getCourse() {
         return course;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
-    }
-
     public List<Answer> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(List<Answer> answers) {
-        this.answers = answers;
+    @Override
+    public String toString() {
+        return "Topic{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", message='" + message + '\'' +
+                ", createdAt=" + createdAt +
+                ", author=" + author +
+                ", course=" + course +
+                ", answers=" + answers +
+                '}';
     }
 }

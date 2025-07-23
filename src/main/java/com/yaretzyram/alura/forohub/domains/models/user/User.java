@@ -4,9 +4,7 @@ import com.yaretzyram.alura.forohub.domains.models.answer.Answer;
 import com.yaretzyram.alura.forohub.domains.models.topic.Topic;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -15,17 +13,15 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name", nullable = false, length = 100)
+    @Column(name = "name")
     private String name;
-    @Column(name = "email", nullable = false, length = 100)
+    @Column(name = "email")
     private String email;
-    @Column(name = "password", nullable = false, length = 100)
+    @Column(name = "password")
     private String password;
     @OneToMany(mappedBy = "author")
-    @Column(name = "topics")
     private List<Topic> topics;
     @OneToMany(mappedBy = "author")
-    @Column(name = "answers")
     private List<Answer> answers;
     @Column(name = "active")
     private boolean active;
@@ -36,8 +32,7 @@ public class User {
         this.name = userRegisterDTO.name();
         this.email = userRegisterDTO.email();
         this.password = userRegisterDTO.password();
-        this.topics = new ArrayList<Topic>();
-        this.answers = new ArrayList<Answer>();
+        this.active = true;
     }
 
     public void updateUserData(UserUpdateDTO userUpdateDTO){
@@ -78,22 +73,6 @@ public class User {
         this.password = password;
     }
 
-    public List<Topic> getTopics() {
-        return topics;
-    }
-
-    public void setTopics(List<Topic> topics) {
-        this.topics = topics;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
-    public void setAnswers(List<Answer> answers) {
-        this.answers = answers;
-    }
-
     public boolean isActive() {
         return active;
     }
@@ -109,8 +88,6 @@ public class User {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", topics=" + topics +
-                ", answers=" + answers +
                 '}';
     }
 }

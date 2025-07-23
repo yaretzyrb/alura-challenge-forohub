@@ -1,9 +1,8 @@
 package com.yaretzyram.alura.forohub.controllers;
 
-import com.yaretzyram.alura.forohub.domains.models.topic.Topic;
-import com.yaretzyram.alura.forohub.domains.models.topic.TopicInputDTO;
-import com.yaretzyram.alura.forohub.domains.models.topic.TopicOutputDTO;
-import com.yaretzyram.alura.forohub.domains.models.topic.TopicRepository;
+import com.yaretzyram.alura.forohub.domains.models.course.Course;
+import com.yaretzyram.alura.forohub.domains.models.topic.*;
+import com.yaretzyram.alura.forohub.domains.models.user.User;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,23 +10,35 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
-@RequestMapping("/topicos")
+@RequestMapping("/topics")
 public class TopicController {
 
     @Autowired
-    private TopicRepository repository;
+    private TopicRepository topicRepository;
 
+    @Autowired
+    private TopicService service;
+
+    @PostMapping("/register")
     @Transactional
-    @PostMapping
-    private ResponseEntity<Topic> createTopic(@RequestBody TopicInputDTO topicInputDTO ){
-        Topic topic = new Topic(topicInputDTO);
-        repository.save(topic);
+    public ResponseEntity createTopic(@RequestBody TopicInputDTO topicInputDTO, UriComponentsBuilder uriComponentsBuilder){
 
+        boolean isTopicDuplicated = service.duplicatedTopic(topicInputDTO);
 
-        return ResponseEntity.ok().body(topic);
+        if(isTopicDuplicated){
+            return ResponseEntity.badRequest().body("Tópico duplicado");
+        }
 
+        Topic topic = service.createTopic(topicInputDTO);
+        topicRepository.save(topic);
+        TopicOutputDTO createdTopic = new TopicOutputDTO(topic.getId(), topic.getTitle(), topic.getMessage(), topic.getAuthor().getName(), topic.getCourse().getName(), topic.getCreatedAt());
+        URI url = uriComponentsBuilder.path("/topics/{id}").buildAndExpand(createdTopic.id()).toUri();
+        return ResponseEntity.created(url).body(createdTopic);
     }
 
 }
