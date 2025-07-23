@@ -3,12 +3,16 @@ package com.yaretzyram.alura.forohub.domains.models.user;
 import com.yaretzyram.alura.forohub.domains.models.answer.Answer;
 import com.yaretzyram.alura.forohub.domains.models.topic.Topic;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +42,6 @@ public class User {
     public void updateUserData(UserUpdateDTO userUpdateDTO){
         if (!this.name.equals(userUpdateDTO.name()) && !userUpdateDTO.name().isEmpty()) setName(userUpdateDTO.name());
         if (!this.email.equals(userUpdateDTO.email()) && !userUpdateDTO.email().isEmpty()) setEmail(userUpdateDTO.email());
-        if (!this.password.equals(userUpdateDTO.password()) && !userUpdateDTO.password().isEmpty()) setPassword(userUpdateDTO.password());
     }
 
     public void deactivateUser(){
@@ -65,8 +68,38 @@ public class User {
         this.email = email;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return "";
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
     }
 
     public void setPassword(String password) {
