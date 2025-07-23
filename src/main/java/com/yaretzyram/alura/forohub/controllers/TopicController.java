@@ -6,13 +6,11 @@ import com.yaretzyram.alura.forohub.domains.models.user.User;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/topics")
@@ -39,6 +37,11 @@ public class TopicController {
         TopicOutputDTO createdTopic = new TopicOutputDTO(topic.getId(), topic.getTitle(), topic.getMessage(), topic.getAuthor().getName(), topic.getCourse().getName(), topic.getCreatedAt());
         URI url = uriComponentsBuilder.path("/topics/{id}").buildAndExpand(createdTopic.id()).toUri();
         return ResponseEntity.created(url).body(createdTopic);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<TopicOutputDTO>> getTopics(){
+        return ResponseEntity.ok(topicRepository.findByActiveTrue().stream().toList());
     }
 
 }

@@ -27,6 +27,8 @@ public class Topic {
     private Course course;
     @OneToMany(mappedBy = "topic")
     private List<Answer> answers;
+    @Column(name = "active")
+    private boolean active;
 
     public Topic(){}
 
@@ -37,6 +39,7 @@ public class Topic {
         this.author = user;
         this.course = course;
         this.answers = new ArrayList<Answer>();
+        this.active = true;
     }
 
 
@@ -78,6 +81,14 @@ public class Topic {
 
     public List<Answer> getAnswers() {
         return answers;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     @Override
