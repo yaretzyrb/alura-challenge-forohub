@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Collection;
 import java.util.List;
@@ -35,7 +37,7 @@ public class User implements UserDetails {
     public User(UserRegisterDTO userRegisterDTO) {
         this.name = userRegisterDTO.name();
         this.email = userRegisterDTO.email();
-        this.password = userRegisterDTO.password();
+        setPassword(userRegisterDTO.password());
         this.active = true;
     }
 
@@ -103,7 +105,8 @@ public class User implements UserDetails {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        String salt = BCrypt.gensalt(12);
+        this.password = BCrypt.hashpw(password, salt);
     }
 
     public boolean isActive() {
@@ -120,7 +123,6 @@ public class User implements UserDetails {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 '}';
     }
 }
