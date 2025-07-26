@@ -6,6 +6,7 @@ public record TopicOutputDTO(
         Long id,
         String title,
         String message,
+        Status status,
         String authorName,
         String courseName,
         LocalDateTime createdAt

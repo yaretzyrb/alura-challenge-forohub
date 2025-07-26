@@ -20,6 +20,8 @@ public class Topic {
     private String title;
     @Column(name = "message", nullable = false)
     private String message;
+    @Column(name = "status")
+    private Status status;
     @Column(name = "createdAt", nullable = false)
     private LocalDateTime createdAt;
     @ManyToOne()
@@ -38,6 +40,7 @@ public class Topic {
     public Topic(TopicInputDTO topicInputDTO, User user, Course course){
         this.title = topicInputDTO.title();
         this.message = topicInputDTO.message();
+        this.status = Status.NOTSOLVED;
         this.createdAt = LocalDateTime.now();
         this.author = user;
         this.course = course;
@@ -92,6 +95,14 @@ public class Topic {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public void updateTopicData(TopicUpdateDTO updatedTopicData) {

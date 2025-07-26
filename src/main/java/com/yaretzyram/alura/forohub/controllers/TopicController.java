@@ -31,12 +31,12 @@ public class TopicController {
         boolean isTopicDuplicated = service.duplicatedTopic(topicInputDTO);
 
         if(isTopicDuplicated){
-            return ResponseEntity.badRequest().body("Tópico duplicado");
+            return ResponseEntity.badRequest().body("Duplicated topic");
         }
 
         Topic topic = service.createTopic(topicInputDTO);
         topicRepository.save(topic);
-        TopicOutputDTO createdTopic = new TopicOutputDTO(topic.getId(), topic.getTitle(), topic.getMessage(), topic.getAuthor().getName(), topic.getCourse().getName(), topic.getCreatedAt());
+        TopicOutputDTO createdTopic = new TopicOutputDTO(topic.getId(), topic.getTitle(), topic.getMessage(), topic.getStatus(), topic.getAuthor().getName(), topic.getCourse().getName(), topic.getCreatedAt());
         URI url = uriComponentsBuilder.path("/topics/{id}").buildAndExpand(createdTopic.id()).toUri();
         return ResponseEntity.created(url).body(createdTopic);
     }
@@ -49,7 +49,7 @@ public class TopicController {
     @GetMapping("{id}")
     public ResponseEntity<TopicOutputDTO> getTopicByID(@PathVariable Long id){
         Topic topic = topicRepository.getReferenceById(id);
-        TopicOutputDTO foundTopic = new TopicOutputDTO(topic.getId(), topic.getTitle(), topic.getMessage(), topic.getAuthor().getName(), topic.getCourse().getName(), topic.getCreatedAt());
+        TopicOutputDTO foundTopic = new TopicOutputDTO(topic.getId(), topic.getTitle(), topic.getMessage(), topic.getStatus(), topic.getAuthor().getName(), topic.getCourse().getName(), topic.getCreatedAt());
         return ResponseEntity.ok(foundTopic);
     }
 
@@ -58,7 +58,7 @@ public class TopicController {
     public ResponseEntity<TopicOutputDTO> updateTopic(@PathVariable Long id, @RequestBody @Valid TopicUpdateDTO updatedTopicData){
         Topic existingTopic = topicRepository.getReferenceById(id);
         existingTopic.updateTopicData(updatedTopicData);
-        TopicOutputDTO updatedTopic = new TopicOutputDTO(existingTopic.getId(), existingTopic.getTitle(), existingTopic.getMessage(), existingTopic.getAuthor().getName(), existingTopic.getCourse().getName(), existingTopic.getCreatedAt());
+        TopicOutputDTO updatedTopic = new TopicOutputDTO(existingTopic.getId(), existingTopic.getTitle(), existingTopic.getMessage(), existingTopic.getStatus(), existingTopic.getAuthor().getName(), existingTopic.getCourse().getName(), existingTopic.getCreatedAt());
         return ResponseEntity.ok(updatedTopic);
     }
 
