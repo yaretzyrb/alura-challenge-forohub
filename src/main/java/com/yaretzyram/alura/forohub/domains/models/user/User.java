@@ -19,17 +19,17 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
     @OneToMany(mappedBy = "author")
     private List<Topic> topics;
     @OneToMany(mappedBy = "author")
     private List<Answer> answers;
-    @Column(name = "active")
+    @Column(name = "active", nullable = false)
     private boolean active;
 
     public  User(){}
@@ -115,14 +115,5 @@ public class User implements UserDetails {
 
     public void setActive(boolean active) {
         this.active = active;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                '}';
     }
 }

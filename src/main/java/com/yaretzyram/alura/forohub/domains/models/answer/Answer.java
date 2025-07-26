@@ -12,11 +12,12 @@ public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(name = "message", nullable = false)
     private String message;
     @ManyToOne()
     @JoinColumn(name = "topic_id")
     private Topic topic;
+    @Column(name = "createdAt", nullable = false)
     private LocalDateTime createdAt;
     @ManyToOne()
     @JoinColumn(name = "user_id")

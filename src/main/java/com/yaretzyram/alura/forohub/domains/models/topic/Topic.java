@@ -16,8 +16,11 @@ public class Topic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "title", nullable = false)
     private String title;
+    @Column(name = "message", nullable = false)
     private String message;
+    @Column(name = "createdAt", nullable = false)
     private LocalDateTime createdAt;
     @ManyToOne()
     @JoinColumn(name = "user_id")
@@ -27,7 +30,7 @@ public class Topic {
     private Course course;
     @OneToMany(mappedBy = "topic")
     private List<Answer> answers;
-    @Column(name = "active")
+    @Column(name = "active", nullable = false)
     private boolean active;
 
     public Topic(){}
@@ -89,19 +92,6 @@ public class Topic {
 
     public void setActive(boolean active) {
         this.active = active;
-    }
-
-    @Override
-    public String toString() {
-        return "Topic{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", message='" + message + '\'' +
-                ", createdAt=" + createdAt +
-                ", author=" + author +
-                ", course=" + course +
-                ", answers=" + answers +
-                '}';
     }
 
     public void updateTopicData(TopicUpdateDTO updatedTopicData) {
