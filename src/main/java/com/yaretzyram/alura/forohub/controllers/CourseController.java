@@ -5,6 +5,7 @@ import com.yaretzyram.alura.forohub.domains.models.course.CourseInputDTO;
 import com.yaretzyram.alura.forohub.domains.models.course.CourseOutputDTO;
 import com.yaretzyram.alura.forohub.domains.models.course.CourseRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class CourseController {
 
     @PostMapping("/register")
     @Transactional
-    public ResponseEntity<CourseOutputDTO> registerCourse(@RequestBody CourseInputDTO courseData, UriComponentsBuilder uriComponentsBuilder){
+    public ResponseEntity<CourseOutputDTO> registerCourse(@RequestBody @Valid CourseInputDTO courseData, UriComponentsBuilder uriComponentsBuilder){
         Course course = new Course(courseData);
         System.out.println(course);
         courseRepository.save(course);

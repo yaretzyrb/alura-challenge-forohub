@@ -4,6 +4,7 @@ import com.yaretzyram.alura.forohub.domains.models.course.Course;
 import com.yaretzyram.alura.forohub.domains.models.topic.*;
 import com.yaretzyram.alura.forohub.domains.models.user.User;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class TopicController {
 
     @PostMapping("/register")
     @Transactional
-    public ResponseEntity createTopic(@RequestBody TopicInputDTO topicInputDTO, UriComponentsBuilder uriComponentsBuilder){
+    public ResponseEntity createTopic(@RequestBody @Valid TopicInputDTO topicInputDTO, UriComponentsBuilder uriComponentsBuilder){
 
         boolean isTopicDuplicated = service.duplicatedTopic(topicInputDTO);
 
@@ -54,7 +55,7 @@ public class TopicController {
 
     @PutMapping("{id}")
     @Transactional
-    public ResponseEntity<TopicOutputDTO> updateTopic(@PathVariable Long id, @RequestBody TopicUpdateDTO updatedTopicData){
+    public ResponseEntity<TopicOutputDTO> updateTopic(@PathVariable Long id, @RequestBody @Valid TopicUpdateDTO updatedTopicData){
         Topic existingTopic = topicRepository.getReferenceById(id);
         existingTopic.updateTopicData(updatedTopicData);
         TopicOutputDTO updatedTopic = new TopicOutputDTO(existingTopic.getId(), existingTopic.getTitle(), existingTopic.getMessage(), existingTopic.getAuthor().getName(), existingTopic.getCourse().getName(), existingTopic.getCreatedAt());

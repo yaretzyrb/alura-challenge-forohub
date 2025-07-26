@@ -2,6 +2,7 @@ package com.yaretzyram.alura.forohub.controllers;
 
 import com.yaretzyram.alura.forohub.domains.models.user.*;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class UserController {
 
     @PostMapping("/register")
     @Transactional
-    public ResponseEntity<UserOutputDTO> registerNewUser(@RequestBody UserRegisterDTO userRegisterDTO, UriComponentsBuilder uriComponentsBuilder){
+    public ResponseEntity<UserOutputDTO> registerNewUser(@RequestBody @Valid UserRegisterDTO userRegisterDTO, UriComponentsBuilder uriComponentsBuilder){
         User user = new User(userRegisterDTO);
         userRepository.save(user);
 
@@ -42,7 +43,7 @@ public class UserController {
 
     @PutMapping
     @Transactional
-    public ResponseEntity<UserOutputDTO> updateUser(@RequestBody UserUpdateDTO newUserData){
+    public ResponseEntity<UserOutputDTO> updateUser(@RequestBody @Valid UserUpdateDTO newUserData){
         User existingUser = userRepository.getReferenceById(newUserData.id());
         existingUser.updateUserData(newUserData);
         UserOutputDTO updatedUser = new UserOutputDTO(existingUser.getId(), existingUser.getName(), existingUser.getEmail());
